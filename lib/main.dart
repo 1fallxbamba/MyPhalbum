@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:myphalbum/pages/login.dart';
+import 'package:myphalbum/pages/register.dart';
+import 'package:myphalbum/pages/intro_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,27 +17,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        '/login': (context) => const LoginPage()
+      },
       title: 'My Phalbum',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: Colors.white60,
-        body: const LoginPage(),
-        bottomNavigationBar: BottomAppBar(
-            color: Colors.transparent,
-            elevation: 0,
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              child: Text(
-                "Make amazing albums...",
-                style: GoogleFonts.montserratAlternates(
-                    color: Colors.white
-                ),
-                textAlign: TextAlign.center,
-              ),
-            )),
+        backgroundColor: Colors.white38,
+        body: const IntroScreen()
       ),
     );
   }

@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController fullNameController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -19,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.white60,
+      backgroundColor: Colors.white38,
       body: SafeArea(
         child: SingleChildScrollView(
             reverse: true,
@@ -44,15 +45,14 @@ class _LoginPageState extends State<LoginPage> {
                             style: GoogleFonts.rockSalt(
                                 fontSize: 34,
                                 color: Colors.white,
-                                fontWeight: FontWeight.bold)
-                        ),
+                                fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 30),
                 Container(
-                  height: 140,
+                  height: 210,
                   width: 530,
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -60,6 +60,18 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: Column(
                     children: <Widget>[
+                      TextFormField(
+                        controller: fullNameController,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Nom complet",
+                            contentPadding: EdgeInsets.all(20)
+                        ),
+                        onEditingComplete: () =>
+                            FocusScope.of(context).nextFocus(),
+                        style: GoogleFonts.roboto(),
+                      ),
+                      const Divider(thickness: 1.5),
                       TextFormField(
                         controller: usernameController,
                         decoration: const InputDecoration(
@@ -81,8 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                             suffixIcon: IconButton(
                               icon: Icon(_isObscure
                                   ? Icons.visibility_off
-                                  : Icons.visibility
-                              ),
+                                  : Icons.visibility),
                               onPressed: () {
                                 setState(() {
                                   _isObscure = !_isObscure;
@@ -99,15 +110,15 @@ class _LoginPageState extends State<LoginPage> {
                 Container(
                   width: 570,
                   height: 70,
-                  padding: EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 20),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          primary: Colors.red,
+                          primary: Colors.green,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30)
                           )
                       ),
-                      child: Text("Se connecter",
+                      child: Text("S'inscrire",
                           style: GoogleFonts.montserratAlternates(
                               color: Colors.white, fontSize: 20)
                       ),
@@ -118,29 +129,44 @@ class _LoginPageState extends State<LoginPage> {
                     padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
                     child: Center(
                         child: RichText(
-                      text: TextSpan(
-                        text: "Pas de compte ?  ",
-                        style: GoogleFonts.montserrat(
-                            color: Colors.white, fontSize: 16),
-                        children: [
-                          TextSpan(
-                              text: "S'inscrire",
-                              style: GoogleFonts.montserrat(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.underline),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () => {
-                                Navigator.popAndPushNamed(context, '/')
-                                }
-                                ),
-                        ],
-                      ),
-                    )
+                          text: TextSpan(
+                            text: "Déjà un compte ?  ",
+                            style: GoogleFonts.montserrat(
+                                color: Colors.white, fontSize: 16),
+                            children: [
+                              TextSpan(
+                                  text: "Se connecter",
+                                  style: GoogleFonts.montserrat(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.underline),
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () => {
+                                    Navigator.popAndPushNamed(context, "/login")
+                                    }
+                                    ),
+                            ],
+                          ),
+                        )
                     )
                 )
               ],
-            )),
+            )
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+          color: Colors.white38,
+          elevation: 0,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Text(
+              "Make amazing albums...",
+              style: GoogleFonts.montserratAlternates(
+                  color: Colors.white
+              ),
+              textAlign: TextAlign.center,
+            ),
+          )
       ),
     );
   }
