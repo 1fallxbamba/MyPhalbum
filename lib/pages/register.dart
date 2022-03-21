@@ -155,7 +155,7 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-          color: Colors.white38,
+          color: Colors.transparent,
           elevation: 0,
           child: Container(
             padding: const EdgeInsets.all(20),

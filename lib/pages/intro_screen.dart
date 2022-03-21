@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intro_slider/intro_slider.dart';
 import 'package:intro_slider/slide_object.dart';
 
+import 'package:myphalbum/services/storage.dart';
+
 class IntroScreen extends StatefulWidget {
   const IntroScreen({Key? key}) : super(key: key);
 
@@ -67,9 +69,9 @@ class _IntroScreenState extends State<IntroScreen> {
     );
   }
 
-  void slideFinished() {
-    // Do what you want
-    print("End of slides");
+  void slideFinished() async {
+    saveLocalData('sliderStatus', 'VIEWED');
+    Navigator.popAndPushNamed(context, '/');
   }
 
   Widget nextButton() {
