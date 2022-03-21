@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'package:myphalbum/services/authentication.dart';
+import 'package:myphalbum/widgets/popup.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -15,6 +20,25 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController passwordController = TextEditingController();
 
   bool _isObscure = true;
+
+  void register() async {
+
+    Map<String, dynamic> newUserData = {
+      "fullName": fullNameController.text,
+      "username": usernameController.text,
+      "password": passwordController.text
+    };
+
+    dynamic _resp = await newUser(newUserData);
+    dynamic response = jsonDecode(_resp.body);
+
+    if(response['Code'] == 'NUSR') {
+      showPopup(context, 'Bienvenue sur My Phalbum', response['Message']['fr']);
+    } else {
+      showPopup(context, 'Oops...', response['Message']['fr']);
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +146,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           style: GoogleFonts.montserratAlternates(
                               color: Colors.white, fontSize: 20)
                       ),
-                      onPressed: () {}
+                      onPressed: () {
+                        register();
+                      }
                       ),
                 ),
                 Container(
