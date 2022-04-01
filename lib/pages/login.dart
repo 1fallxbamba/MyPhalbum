@@ -49,6 +49,7 @@ class _LoginPageState extends State<LoginPage> {
           if(stayConnected) {
             saveLocalData('stayConnected', 'TRUE');
           }
+          saveLocalData('userID', response['Data']['id']);
           Navigator.popAndPushNamed(context, '/home');
         } else {
           showPopup(context, 'Oops...', response['Message']['fr']);
