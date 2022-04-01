@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:myphalbum/services/storage.dart';
 
@@ -8,7 +8,8 @@ import 'package:myphalbum/pages/register.dart';
 import 'package:myphalbum/pages/intro_screen.dart';
 import 'package:myphalbum/pages/home.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load();
   runApp(const MyApp());
 }
 

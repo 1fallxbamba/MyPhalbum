@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
@@ -8,7 +9,7 @@ Future<dynamic> registerUser(dynamic newUserData) async {
   try {
 
     Response resp = await post(
-        Uri.parse('http://localhost:8000/api/auth/register'),
+        Uri.parse('${dotenv.env['API_BASE_URL']}auth/register'),
         headers: {'Content-type': 'application/json'},
         body: jsonEncode(newUserData)
     );
@@ -26,7 +27,7 @@ Future<dynamic> authenticate(dynamic loginData) async {
   try {
 
     Response resp = await post(
-        Uri.parse('http://localhost:8000/api/auth/login'),
+        Uri.parse('${dotenv.env['API_BASE_URL']}auth/login'),
         headers: {'Content-type': 'application/json'},
         body: jsonEncode(loginData)
     );
