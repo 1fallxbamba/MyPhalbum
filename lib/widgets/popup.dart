@@ -33,7 +33,7 @@ Future<void> showPopup(BuildContext context, String title, String message) async
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                child: const Text('OK'),
+                child: const Text("J'ai compris"),
                 onPressed: ()  {
                   Navigator.pop(context);
                 },

@@ -26,18 +26,18 @@ class _IntroScreenState extends State<IntroScreen> {
           color: Colors.white,
           fontSize: 25
         ),
-        description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+        description: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
         styleDescription: GoogleFonts.montserratAlternates(
           color: Colors.white,
           fontSize: 30
         ),
-        pathImage: "assets/images/logo_main.png",
+        pathImage: 'assets/images/logo_main.png',
         backgroundColor: Colors.green,
       ),
     );
     slides.add(
       Slide(
-        title: "Some Text",
+        title: 'Some Text',
         styleTitle: GoogleFonts.montserrat(
             color: Colors.white,
             fontSize: 25
@@ -47,23 +47,23 @@ class _IntroScreenState extends State<IntroScreen> {
             color: Colors.white,
             fontSize: 30
         ),
-        pathImage: "assets/images/logo_main.png",
+        pathImage: 'assets/images/logo_main.png',
         backgroundColor: const Color(0xff203152),
       ),
     );
     slides.add(
       Slide(
-        title: "Some other Text",
+        title: 'Some other Text',
         styleTitle: GoogleFonts.montserrat(
             color: Colors.white,
             fontSize: 25
         ),
-        description: "It has survived not only five centuries, but also the leap into electronic typesetting.",
+        description: 'It has survived not only five centuries, but also the leap into electronic typesetting.',
         styleDescription: GoogleFonts.montserratAlternates(
             color: Colors.white,
             fontSize: 30
         ),
-        pathImage: "assets/images/logo_main.png",
+        pathImage: 'assets/images/logo_main.png',
         backgroundColor: const Color(0xff9932CC),
       ),
     );
@@ -84,7 +84,7 @@ class _IntroScreenState extends State<IntroScreen> {
 
   Widget skipButton() {
     return Text(
-      "Passer",
+      'Passer',
       style: GoogleFonts.montserrat(
         color: Colors.white
       ),

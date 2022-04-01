@@ -33,28 +33,29 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void register() async {
     Map<String, dynamic> newUserData = {
-      "fullName": fullNameController.text,
-      "username": usernameController.text,
-      "password": passwordController.text
+      'fullName': fullNameController.text,
+      'username': usernameController.text,
+      'password': passwordController.text
     };
 
     if(isFormValid()) {
-      dynamic _resp = await newUser(newUserData);
+      dynamic _resp = await registerUser(newUserData);
 
       if (_resp == null) {
         showPopup(context, 'Oops...',
-            "Nous rencontrons des soucis de connexion, veuillez vérifier votre connexion à internet.");
+            'Nous rencontrons des soucis de connexion, veuillez vérifier votre connexion à internet.');
       } else {
         dynamic response = jsonDecode(_resp.body);
         if (response['Code'] == 'NUSR') {
           showPopup(
-              context, 'Bienvenue sur My Phalbum', response['Message']['fr']);
+              context, 'Bienvenue sur My Phalbum !', response['Message']['fr']);
+          Navigator.pushReplacementNamed(context, '/login');
         } else {
           showPopup(context, 'Oops...', response['Message']['fr']);
         }
       }
     } else {
-      showPopup(context, 'Oops...', "Veuillez remplir tout le formulaire !");
+      showPopup(context, 'Oops...', 'Veuillez remplir tout le formulaire !');
     }
 
   }
@@ -75,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   children: [
                     const CircleAvatar(
                       backgroundImage:
-                          AssetImage("assets/images/logo_main.png"),
+                          AssetImage('assets/images/logo_main.png'),
                       radius: 50,
                       backgroundColor: Colors.transparent,
                     ),
@@ -84,7 +85,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 100,
                         width: 300,
                         alignment: Alignment.center,
-                        child: Text("My Phalbum",
+                        child: Text('My Phalbum',
                             style: GoogleFonts.rockSalt(
                                 fontSize: 34,
                                 color: Colors.white,
@@ -106,7 +107,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         controller: fullNameController,
                         decoration: const InputDecoration(
                             border: InputBorder.none,
-                            hintText: "Nom complet",
+                            hintText: 'Nom complet',
                             contentPadding: EdgeInsets.all(20)),
                         onEditingComplete: () =>
                             FocusScope.of(context).nextFocus(),
@@ -128,7 +129,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         controller: passwordController,
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: "Mot de passe",
+                            hintText: 'Mot de passe',
                             contentPadding: const EdgeInsets.all(20),
                             suffixIcon: IconButton(
                               icon: Icon(_isObscure
@@ -168,12 +169,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Center(
                         child: RichText(
                       text: TextSpan(
-                        text: "Déjà un compte ?  ",
+                        text: 'Déjà un compte ?  ',
                         style: GoogleFonts.montserrat(
                             color: Colors.white, fontSize: 16),
                         children: [
                           TextSpan(
-                              text: "Se connecter",
+                              text: 'Se connecter',
                               style: GoogleFonts.montserrat(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
@@ -181,7 +182,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () => {
                                       Navigator.popAndPushNamed(
-                                          context, "/login")
+                                          context, '/login')
                                     }),
                         ],
                       ),
@@ -195,7 +196,7 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Container(
             padding: const EdgeInsets.all(20),
             child: Text(
-              "Make amazing albums...",
+              'Make amazing albums...',
               style: GoogleFonts.montserratAlternates(color: Colors.white),
               textAlign: TextAlign.center,
             ),
