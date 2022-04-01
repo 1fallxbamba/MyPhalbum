@@ -37,7 +37,7 @@ class _IntroScreenState extends State<IntroScreen> {
     );
     slides.add(
       Slide(
-        title: "TexT",
+        title: "Some Text",
         styleTitle: GoogleFonts.montserrat(
             color: Colors.white,
             fontSize: 25
@@ -53,7 +53,7 @@ class _IntroScreenState extends State<IntroScreen> {
     );
     slides.add(
       Slide(
-        title: "RULER",
+        title: "Some other Text",
         styleTitle: GoogleFonts.montserrat(
             color: Colors.white,
             fontSize: 25
@@ -71,7 +71,7 @@ class _IntroScreenState extends State<IntroScreen> {
 
   void slideFinished() async {
     saveLocalData('sliderStatus', 'VIEWED');
-    Navigator.popAndPushNamed(context, '/');
+    Navigator.popAndPushNamed(context, '/register');
   }
 
   Widget nextButton() {

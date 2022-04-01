@@ -37,7 +37,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        "/login": (context) => const LoginPage()
+        "/login": (context) => const LoginPage(),
+        "/register": (context) => const RegisterPage()
       },
       title: "My Phalbum",
       theme: ThemeData(

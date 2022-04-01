@@ -21,21 +21,40 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool _isObscure = true;
 
-  void register() async {
+  bool isFormValid() {
+    if (fullNameController.text.isEmpty ||
+        usernameController.text.isEmpty ||
+        passwordController.text.isEmpty) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
+  void register() async {
     Map<String, dynamic> newUserData = {
       "fullName": fullNameController.text,
       "username": usernameController.text,
       "password": passwordController.text
     };
 
-    dynamic _resp = await newUser(newUserData);
-    dynamic response = jsonDecode(_resp.body);
+    if(isFormValid()) {
+      dynamic _resp = await newUser(newUserData);
 
-    if(response['Code'] == 'NUSR') {
-      showPopup(context, 'Bienvenue sur My Phalbum', response['Message']['fr']);
+      if (_resp == null) {
+        showPopup(context, 'Oops...',
+            "Nous rencontrons des soucis de connexion, veuillez vérifier votre connexion à internet.");
+      } else {
+        dynamic response = jsonDecode(_resp.body);
+        if (response['Code'] == 'NUSR') {
+          showPopup(
+              context, 'Bienvenue sur My Phalbum', response['Message']['fr']);
+        } else {
+          showPopup(context, 'Oops...', response['Message']['fr']);
+        }
+      }
     } else {
-      showPopup(context, 'Oops...', response['Message']['fr']);
+      showPopup(context, 'Oops...', "Veuillez remplir tout le formulaire !");
     }
 
   }
@@ -55,7 +74,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 Column(
                   children: [
                     const CircleAvatar(
-                      backgroundImage: AssetImage("assets/images/logo_main.png"),
+                      backgroundImage:
+                          AssetImage("assets/images/logo_main.png"),
                       radius: 50,
                       backgroundColor: Colors.transparent,
                     ),
@@ -64,8 +84,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 100,
                         width: 300,
                         alignment: Alignment.center,
-                        child: Text(
-                            "My Phalbum",
+                        child: Text("My Phalbum",
                             style: GoogleFonts.rockSalt(
                                 fontSize: 34,
                                 color: Colors.white,
@@ -80,8 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   width: 530,
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: Colors.white
-                  ),
+                      color: Colors.white),
                   child: Column(
                     children: <Widget>[
                       TextFormField(
@@ -89,8 +107,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: "Nom complet",
-                            contentPadding: EdgeInsets.all(20)
-                        ),
+                            contentPadding: EdgeInsets.all(20)),
                         onEditingComplete: () =>
                             FocusScope.of(context).nextFocus(),
                         style: GoogleFonts.roboto(),
@@ -101,8 +118,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: "Nom d'utilisateur",
-                            contentPadding: EdgeInsets.all(20)
-                        ),
+                            contentPadding: EdgeInsets.all(20)),
                         onEditingComplete: () =>
                             FocusScope.of(context).nextFocus(),
                         style: GoogleFonts.roboto(),
@@ -123,8 +139,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   _isObscure = !_isObscure;
                                 });
                               },
-                            )
-                        ),
+                            )),
                         obscureText: _isObscure,
                         style: GoogleFonts.roboto(),
                       ),
@@ -139,46 +154,40 @@ class _RegisterPageState extends State<RegisterPage> {
                       style: ElevatedButton.styleFrom(
                           primary: Colors.green,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30)
-                          )
-                      ),
+                              borderRadius: BorderRadius.circular(30))),
                       child: Text("S'inscrire",
                           style: GoogleFonts.montserratAlternates(
-                              color: Colors.white, fontSize: 20)
-                      ),
+                              color: Colors.white, fontSize: 20)),
                       onPressed: () {
                         register();
-                      }
-                      ),
+                      }),
                 ),
                 Container(
-                    padding: const EdgeInsets.only(top: 40, left: 20, right: 20),
+                    padding:
+                        const EdgeInsets.only(top: 40, left: 20, right: 20),
                     child: Center(
                         child: RichText(
-                          text: TextSpan(
-                            text: "Déjà un compte ?  ",
-                            style: GoogleFonts.montserrat(
-                                color: Colors.white, fontSize: 16),
-                            children: [
-                              TextSpan(
-                                  text: "Se connecter",
-                                  style: GoogleFonts.montserrat(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      decoration: TextDecoration.underline),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () => {
-                                    Navigator.popAndPushNamed(context, "/login")
-                                    }
-                                    ),
-                            ],
-                          ),
-                        )
-                    )
-                )
+                      text: TextSpan(
+                        text: "Déjà un compte ?  ",
+                        style: GoogleFonts.montserrat(
+                            color: Colors.white, fontSize: 16),
+                        children: [
+                          TextSpan(
+                              text: "Se connecter",
+                              style: GoogleFonts.montserrat(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.underline),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () => {
+                                      Navigator.popAndPushNamed(
+                                          context, "/login")
+                                    }),
+                        ],
+                      ),
+                    )))
               ],
-            )
-        ),
+            )),
       ),
       bottomNavigationBar: BottomAppBar(
           color: Colors.transparent,
@@ -187,13 +196,10 @@ class _RegisterPageState extends State<RegisterPage> {
             padding: const EdgeInsets.all(20),
             child: Text(
               "Make amazing albums...",
-              style: GoogleFonts.montserratAlternates(
-                  color: Colors.white
-              ),
+              style: GoogleFonts.montserratAlternates(color: Colors.white),
               textAlign: TextAlign.center,
             ),
-          )
-      ),
+          )),
     );
   }
 }

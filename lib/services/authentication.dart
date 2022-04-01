@@ -16,7 +16,7 @@ Future<dynamic> newUser(dynamic newUserData) async {
     return resp;
 
   } catch(ex) {
-    print(ex);
+    return null;
   }
 
 }
