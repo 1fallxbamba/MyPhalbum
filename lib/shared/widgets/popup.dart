@@ -22,7 +22,7 @@ Future<void> showPopup(BuildContext context, String title, String message) async
                 message,
                 style: GoogleFonts.montserratAlternates(
                   color: Colors.black,
-                  fontSize: 20
+                  fontSize: 18
                 ),
               ),
             ],
@@ -33,7 +33,7 @@ Future<void> showPopup(BuildContext context, String title, String message) async
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                child: const Text("J'ai compris"),
+                child: const Text("D'accord"),
                 onPressed: ()  {
                   Navigator.pop(context);
                 },

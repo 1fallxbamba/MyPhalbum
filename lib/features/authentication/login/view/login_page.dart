@@ -1,70 +1,28 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myphalbum/features/authentication/login/logic/login_logic.dart';
 
-import 'package:myphalbum/services/authentication.dart';
-import 'package:myphalbum/widgets/popup.dart';
-
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  _RegisterPageState createState() => _RegisterPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
-  TextEditingController fullNameController = TextEditingController();
+class _LoginPageState extends State<LoginPage> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  bool _isObscure = true;
-
-  bool isFormValid() {
-    if (fullNameController.text.isEmpty ||
-        usernameController.text.isEmpty ||
-        passwordController.text.isEmpty) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  void register() async {
-    Map<String, dynamic> newUserData = {
-      'fullName': fullNameController.text,
-      'username': usernameController.text,
-      'password': passwordController.text
-    };
-
-    if(isFormValid()) {
-      dynamic _resp = await registerUser(newUserData);
-
-      if (_resp == null) {
-        showPopup(context, 'Oops...',
-            'Nous rencontrons des soucis de connexion, veuillez vérifier votre connexion à internet.');
-      } else {
-        dynamic response = jsonDecode(_resp.body);
-        if (response['Code'] == 'NUSR') {
-          showPopup(
-              context, 'Bienvenue sur My Phalbum !', response['Message']['fr']);
-          Navigator.pushReplacementNamed(context, '/login');
-        } else {
-          showPopup(context, 'Oops...', response['Message']['fr']);
-        }
-      }
-    } else {
-      showPopup(context, 'Oops...', 'Veuillez remplir tout le formulaire !');
-    }
-
-  }
+  bool showPassword = true;
+  bool stayConnected = true;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.white38,
+      backgroundColor: Colors.white60,
       body: SafeArea(
         child: SingleChildScrollView(
             reverse: true,
@@ -96,24 +54,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 30),
                 Container(
-                  height: 210,
+                  height: 140,
                   width: 530,
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       color: Colors.white),
                   child: Column(
                     children: <Widget>[
-                      TextFormField(
-                        controller: fullNameController,
-                        decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: 'Nom complet',
-                            contentPadding: EdgeInsets.all(20)),
-                        onEditingComplete: () =>
-                            FocusScope.of(context).nextFocus(),
-                        style: GoogleFonts.roboto(),
-                      ),
-                      const Divider(thickness: 1.5),
                       TextFormField(
                         controller: usernameController,
                         decoration: const InputDecoration(
@@ -129,78 +76,106 @@ class _RegisterPageState extends State<RegisterPage> {
                         controller: passwordController,
                         decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'Mot de passe',
+                            hintText: "Mot de passe",
                             contentPadding: const EdgeInsets.all(20),
                             suffixIcon: IconButton(
-                              icon: Icon(_isObscure
+                              icon: Icon(showPassword
                                   ? Icons.visibility_off
                                   : Icons.visibility),
                               onPressed: () {
                                 setState(() {
-                                  _isObscure = !_isObscure;
+                                  showPassword = !showPassword;
                                 });
                               },
                             )),
-                        obscureText: _isObscure,
+                        obscureText: showPassword,
                         style: GoogleFonts.roboto(),
                       ),
                     ],
                   ),
                 ),
+                const SizedBox(height: 7),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Rester connecté',
+                        style: GoogleFonts.montserrat(
+                            color: Colors.black, fontSize: 15)),
+                    Checkbox(
+                        value: stayConnected,
+                        activeColor: Colors.green,
+                        onChanged: (bool? val) {
+                          setState(() {
+                            stayConnected = val!;
+                          });
+                        }),
+                  ],
+                ),
                 Container(
-                  width: 570,
+                  width: 350,
                   height: 70,
                   padding: const EdgeInsets.only(top: 20),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          primary: Colors.green,
+                          primary: Colors.red,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30))),
-                      child: Text("S'inscrire",
+                      child: Text('Se connecter',
                           style: GoogleFonts.montserratAlternates(
                               color: Colors.white, fontSize: 20)),
                       onPressed: () {
-                        register();
+                        setState(() {
+                          isLoading = true;
+                        });
+                        logUserIn(context, usernameController.text,
+                                passwordController.text, stayConnected)
+                            .whenComplete(() {
+                          setState(() {
+                            isLoading = false;
+                          });
+                        });
                       }),
                 ),
-                Container(
+                const SizedBox(
+                  height: 15,
+                ),
+                (isLoading)
+                    ? const CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                        color: Colors.green,
+                        strokeWidth: 3,
+                      )
+                    : const SizedBox(
+                        height: 1,
+                      )
+              ],
+            )),
+      ),
+    );
+  }
+}
+
+// Removed for now : ( "Don't have an account : Signup" section)
+
+/*                Container(
                     padding:
                         const EdgeInsets.only(top: 40, left: 20, right: 20),
                     child: Center(
                         child: RichText(
                       text: TextSpan(
-                        text: 'Déjà un compte ?  ',
+                        text: 'Pas de compte ?  ',
                         style: GoogleFonts.montserrat(
                             color: Colors.white, fontSize: 16),
                         children: [
                           TextSpan(
-                              text: 'Se connecter',
+                              text: "S'inscrire",
                               style: GoogleFonts.montserrat(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   decoration: TextDecoration.underline),
                               recognizer: TapGestureRecognizer()
-                                ..onTap = () => {
-                                      Navigator.popAndPushNamed(
-                                          context, '/login')
-                                    }),
+                                ..onTap = () =>
+                                    {Navigator.popAndPushNamed(context, '/')}),
                         ],
                       ),
-                    )))
-              ],
-            )),
-      ),
-      bottomNavigationBar: BottomAppBar(
-          color: Colors.transparent,
-          elevation: 0,
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            child: Text(
-              'Make amazing albums...',
-              style: GoogleFonts.montserratAlternates(color: Colors.white),
-              textAlign: TextAlign.center,
-            ),
-          )),
-    );
-  }
-}
+                    )))*/

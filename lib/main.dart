@@ -3,10 +3,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:myphalbum/services/storage.dart';
 
-import 'package:myphalbum/pages/login.dart';
-import 'package:myphalbum/pages/register.dart';
-import 'package:myphalbum/pages/intro_screen.dart';
-import 'package:myphalbum/pages/home.dart';
+import 'package:myphalbum/shared/pages/intro_screen.dart';
+import 'package:myphalbum/features/authentication/registration/view/register_page.dart';
+import 'package:myphalbum/shared/pages/home.dart';
+import 'features/authentication/login/view/login_page.dart';
+
 
 Future<void> main() async {
   await dotenv.load();

@@ -1,39 +1,43 @@
 import 'dart:convert';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart';
 
-Future<dynamic> registerUser(dynamic newUserData) async {
+import 'package:myphalbum/models/api_response.dart';
+import 'package:myphalbum/models/authentication_data.dart';
+
+Future<APIResponse> createNewUser(RegistrationData newUserData) async {
 
   try {
 
-    Response resp = await post(
+    final response = await post(
         Uri.parse('${dotenv.env['API_BASE_URL']}auth/register'),
         headers: {'Content-type': 'application/json'},
-        body: jsonEncode(newUserData)
+        body: newUserData.toJSON()
     );
 
-    return resp;
+    return APIResponse.fromMap(jsonDecode(response.body));
 
   } catch(ex) {
-    return null;
+    return APIResponse.networkError();
   }
 
 }
 
-Future<dynamic> authenticate(dynamic loginData) async {
+Future<APIResponse> authenticate(LoginData loginData) async {
 
   try {
 
-    Response resp = await post(
+    final response = await post(
         Uri.parse('${dotenv.env['API_BASE_URL']}auth/login'),
         headers: {'Content-type': 'application/json'},
-        body: jsonEncode(loginData)
+        body: loginData.toJSON()
     );
 
-    return resp;
+    return APIResponse.fromMap(jsonDecode(response.body));
 
   } catch(ex) {
-    return null;
+    return APIResponse.networkError();
   }
 
 }
